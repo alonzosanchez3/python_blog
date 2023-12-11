@@ -18,6 +18,11 @@ class RegisterForm(FlaskForm):
     name = StringField('Name', validators=[DataRequired()])
     submit = SubmitField('Register')
 
+class LoginForm(FlaskForm):
+    email = StringField("Email", validators=[DataRequired(), Email()])
+    password = PasswordField("Password", validators=[DataRequired()])
+    submit = SubmitField('Login')
+
 
 
 # TODO: Create a RegisterForm to register new users
