@@ -30,6 +30,14 @@ app.config['SECRET_KEY'] = '8BYkEfBA6O6donzWlSihBXox7C0sKR6b'
 ckeditor = CKEditor(app)
 Bootstrap5(app)
 
+from flask_login import LoginManager
+login_manager = LoginManager()
+
+login_manager.init_app(app)
+
+@login_manager.user_loader
+def load_user(user_id):
+    return db.get_or_404(User, user_id)
 # TODO: Configure Flask-Login
 
 
@@ -52,7 +60,7 @@ class BlogPost(db.Model):
 
 
 # TODO: Create a User table for all your registered users.
-class User(db.Model):
+class User(db.Model, UserMixin):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(250), unique=True, nullable=False)
