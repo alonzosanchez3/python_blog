@@ -76,6 +76,10 @@ with app.app_context():
 def register():
     form = RegisterForm()
     if form.validate_on_submit():
+        user = db.session.execute(db.select(User).where(User.email == form.email.data)).scalar()
+        if user:
+            flash("You've already signed up with that email, log in instead!")
+            return redirect(url_for('login'))
         hashedPassword = generate_password_hash(request.form.get('password'), method='pbkdf2:sha256', salt_length=8)
         new_user = User(
             email = request.form.get('email'),
